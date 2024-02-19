@@ -5,7 +5,9 @@
                 <common-aside></common-aside>
             </el-aside>
             <el-container>
-                <el-header>Header</el-header>
+                <el-header>
+                    <common-header />
+                </el-header>
                 <el-main>
                     <!--路由出口，符合路径的视图在这里渲染-->
                     <router-view></router-view>
@@ -18,13 +20,20 @@
 
 <script>
 import CommonAside from '@/components/CommonAside.vue';
+import CommonHeader from '@/components/CommonHeader.vue';
 export default {
     data() {
         return {}
     },
     components:{
-        CommonAside
+        CommonAside,
+        CommonHeader
     }
 }
 
 </script>
+<style>
+.el-header{
+    padding: 0%;
+}
+</style>
