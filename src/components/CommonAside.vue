@@ -44,7 +44,6 @@
 export default {
     data() {
         return { 
-            isCollapse: false,
             menuData:
                 [
                     {
@@ -115,6 +114,10 @@ export default {
         //有子菜单的
         hasChildren() {
             return this.menuData.filter(item => item.children)
+        },
+
+        isCollapse(){
+            return this.$store.state.tab.isCollapse
         }
     }
 }
