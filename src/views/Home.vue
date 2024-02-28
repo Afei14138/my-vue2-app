@@ -20,12 +20,12 @@
                     <el-table-column prop="todayBuy" label="今日购买"></el-table-column>
                     <el-table-column prop="monthBuy" label="本月购买"></el-table-column>
                     <el-table-column prop="totalBuy" label="总购买"></el-table-column> -->
-                    <el-table-column v-for="(val,key) in tableLabel" :key="key" :prop="key" :name="val"/>
+                    <el-table-column v-for="(val, key) in tableLabel" :key="key" :prop="key" :name="val" />
                 </el-table>
             </el-card>
         </el-col>
         <el-col :span="16">
-            <div class="grid-content bg-purple-light"></div>
+            
         </el-col>
     </el-row>
 </template>
@@ -78,8 +78,45 @@ export default {
                 todayBuy: '今日购买',
                 monthBuy: '本月购买',
                 todayBuy: '总购买'
-            }
-
+            },
+            countData: [
+                {
+                    name: "今日支付订单",
+                    value: 1234,
+                    icon: "success",
+                    color: "#2ec7c9",
+                },
+                {
+                    name: "今日收藏订单",
+                    value: 210,
+                    icon: "star-on",
+                    color: "#ffb980",
+                },
+                {
+                    name: "今日未支付订单",
+                    value: 1234,
+                    icon: "s-goods",
+                    color: "#5ab1ef",
+                },
+                {
+                    name: "本月支付订单",
+                    value: 1234,
+                    icon: "success",
+                    color: "#2ec7c9",
+                },
+                {
+                    name: "本月收藏订单",
+                    value: 210,
+                    icon: "star-on",
+                    color: "#ffb980",
+                },
+                {
+                    name: "本月未支付订单",
+                    value: 1234,
+                    icon: "s-goods",
+                    color: "#5ab1ef",
+                },
+            ],
 
         }
     }
