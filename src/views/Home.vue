@@ -25,7 +25,15 @@
             </el-card>
         </el-col>
         <el-col :span="16">
-            
+            <div class="num">
+                <el-card v-for="item in countData" :key="item.name" :body-style="{display:'flex',padding:0}">
+                    <i class="icon" :class="`el-icon-${item.icon}`" :style="{background: item.color}"></i>
+                    <div class="detail">
+                        <p class="price">¥{{ item.value }}</p>
+                        <p class="desc">{{ item.name }}</p>
+                    </div>
+                </el-card>
+            </div>
         </el-col>
     </el-row>
 </template>
@@ -163,5 +171,41 @@ export default {
         }
     }
 
+}
+.num {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    .icon {
+        width: 80px;
+        height: 80px;
+        font-size: 30px;
+        text-align: center;
+        line-height: 80px;
+        color: #fff;
+    }
+    .detail {
+        margin-left: 15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        .price {
+            font-size: 30px;
+            margin-bottom: 10px;   
+            line-height: 30px;
+            height: 30px;     
+        }
+        .desc {
+            font-size: 14px;
+            color: #999999;
+            text-align: center;
+
+        }
+    }
+    .el-card{
+        width: 32%;
+        margin-bottom: 20px;
+    }
 }
 </style>
