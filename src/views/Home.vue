@@ -40,6 +40,8 @@
 
 
 <script>
+import { getData } from '../api'
+
 export default {
     data() {
         return {
@@ -127,6 +129,11 @@ export default {
             ],
 
         }
+    },
+    mounted() {
+        getData().then((data) => {
+            console.log(data)
+        })
     }
 }
 
