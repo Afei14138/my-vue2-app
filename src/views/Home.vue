@@ -37,6 +37,7 @@
             <!-- 统计图表 -->
             <el-card style="height: 280px;">
                 <!-- 折线图 -->
+                <div ref="echarts1" style="height: 280px;"></div>
             </el-card>
             <div class="graph">
                 <el-card style="height: 260px;"></el-card>
@@ -49,7 +50,8 @@
 
 <script>
 import { getData } from '../api'
-
+// 引入 echarts
+import * as echarts from 'echarts'
 export default {
     data() {
         return {
@@ -106,7 +108,35 @@ export default {
             const { tableData } = data.data
             this.tableData = tableData
             console.log(tableData)
+            // 基于准备好的 dom，初始化 echarts
+            const echarts1 = echarts.init(this.$refs.echarts1)
+            // 指定图表的配置项目和数据
+            var echart1Option = {}
+            var option = {}
+            // 处理数据 xAxis
+            const { orderData } = data.data
+            const xAxis = Object.keys(orderData.data[0])
+            const xAxisData = {
+                data: xAxis
+            }
+            echart1Option.xAxis = xAxisData
+            echart1Option.yAxis = {}
+            echart1Option.legend = xAxisData
+            echart1Option.series = []
+            xAxis.forEach(key => {
+                echart1Option.series.push({
+                    name: key,
+                    data: orderData.data.map(item => item[key]),
+                    type: 'line'
+                })
+            })
+            
+            console.log(echart1Option)
+            // 根据配置显示图表
+            echarts1.setOption(echart1Option)
+
         })
+
     }
 }
 
@@ -202,4 +232,5 @@ export default {
     .el-card {
         width: 48%;
     }
-}</style>
+}
+</style>
