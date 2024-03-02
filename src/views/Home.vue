@@ -43,7 +43,9 @@
                 <el-card style="height: 260px;">
                     <div ref="echarts2" style="height: 260px;"></div>
                 </el-card>
-                <el-card style="height: 260px;"></el-card>
+                <el-card style="height: 260px;">
+                    <div ref="echarts3" style="height: 240px;"></div>
+                </el-card>
             </div>
         </el-col>
     </el-row>
@@ -116,7 +118,7 @@ export default {
             var echart1Option = {}
             var option = {}
             // 处理数据 xAxis
-            const { orderData, userData } = data.data
+            const { orderData, userData, videoData } = data.data
             const xAxis = Object.keys(orderData.data[0])
             const xAxisData = {
                 data: xAxis
@@ -191,6 +193,33 @@ export default {
                 ],
             }
             echarts2.setOption(echarts2Option)
+
+            // 饼状图
+            const echarts3 = echarts.init(this.$refs.echarts3)
+            const echart3Option = {
+                tooltip: {
+                    trigger: "item",
+                },
+                color: [
+                    "#0f78f4",
+                    "#dd536b",
+                    "#9462e5",
+                    "#a6a6a6",
+                    "#e1bb22",
+                    "#39c362",
+                    "#3ed1cf",
+                ],
+                series: [
+                    {
+                        data: videoData,
+                        type: 'pie'
+                    }
+                ],
+            }
+            echarts3.setOption(echart3Option)
+
+
+
         })
     }
 }
