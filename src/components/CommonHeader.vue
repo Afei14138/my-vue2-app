@@ -3,7 +3,12 @@
         <div class="l-content">
             <el-button @click="handleMenu" icon="el-icon-menu" size="mini"></el-button>
             <!--面包屑-->
-            <span class="text">首页</span>
+            <el-breadcrumb separator="/">
+                <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+                <el-breadcrumb-item><a href="/">活动管理</a></el-breadcrumb-item>
+                <el-breadcrumb-item>活动列表</el-breadcrumb-item>
+                <el-breadcrumb-item>活动详情</el-breadcrumb-item>
+            </el-breadcrumb>
         </div>
         <div class="r-content">
             <el-dropdown>
@@ -26,14 +31,15 @@ export default {
     data() {
         return {}
     },
-    methods:{
-        handleMenu(){
+    methods: {
+        handleMenu() {
             this.$store.commit('collapseMenu')
         }
     }
 }
 
 </script>
+
 <style>
 .header-container {
     padding: 0 20px;
@@ -48,8 +54,9 @@ export default {
         font-size: 14px;
         margin-left: 10px;
     }
-    .r-content{
-        .user{
+
+    .r-content {
+        .user {
             width: 40px;
             height: 40px;
             border-radius: 50%;
