@@ -103,6 +103,9 @@ export default {
             if(this.$route.path !== item.path && !(this.$route.path === '/home' && item.path === '/') ){
                 this.$router.push(item.path)
             }
+
+            // 面包屑参数传入 route 对象的内容即可
+            this.$store.commit('selectMenu', item)
             
         }
     },
