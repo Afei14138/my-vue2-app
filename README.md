@@ -1,4 +1,7 @@
 # my-vue2-app
+用于学习 vue 知识，集成vuex 进行组件状态管理，vue-router 控制页面间跳转
+
+
 
 ## Project setup
 ```
