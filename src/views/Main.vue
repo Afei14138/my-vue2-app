@@ -8,6 +8,7 @@
                 <el-header>
                     <common-header />
                 </el-header>
+                <common-tag></common-tag>
                 <el-main>
                     <!--路由出口，符合路径的视图在这里渲染-->
                     <router-view></router-view>
@@ -21,13 +22,15 @@
 <script>
 import CommonAside from '@/components/CommonAside.vue';
 import CommonHeader from '@/components/CommonHeader.vue';
+import CommonTag from '@/components/CommonTag.vue';
 export default {
     data() {
         return {}
     },
     components:{
         CommonAside,
-        CommonHeader
+        CommonHeader,
+        CommonTag 
     }
 }
 
