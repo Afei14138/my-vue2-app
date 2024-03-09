@@ -32,7 +32,23 @@ export default {
         // 点击tag 删除功能
         handleClose(item, index){ 
             this.closeTag(item)
-            const length = this.tags.length - 1
+            const length = this.tags.length
+            // 删除之后的跳转逻辑
+            if(item.name !== this.$route.name){
+                return
+            }
+            // 表示删除最后一项
+            if(index === length){
+                this.$router.push({
+                    name: this.tags[index-1].name
+                })
+            }
+            else{
+                this.$router.push({
+                    name: this.tags[index].name
+                })
+            }
+
         }
          
     }
