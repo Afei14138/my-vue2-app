@@ -3,7 +3,8 @@
         <el-tag v-for="item in tags" 
         :key="item.path" 
         :closable="item.name !== 'home'" 
-        :effect="$route.name === item.name ? 'dark' : 'plain'">
+        :effect="$route.name === item.name ? 'dark' : 'plain'"
+        @click="changeMenu(item)">
             {{ item.label }}
         </el-tag>
     </div>
@@ -21,8 +22,12 @@ export default {
             tags: state => state.tab.tabsList
         })
     },
-    mounted(){
-        
+    methods: {
+        // 点击 tag 跳转功能
+        changeMenu(item) {
+            this.$router.push({name: item.name})
+
+        }
     }
 }
 </script>
