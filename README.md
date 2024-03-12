@@ -25,3 +25,6 @@ yarn lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+### 开发记录
+#### 2024.3.12
+今天一整天都在培训和接电话，累爆了，偷懒一天，更新一下 readme 假装有 commit
