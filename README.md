@@ -3,9 +3,14 @@
 
 
 
+
 ## Project setup
 ```
 yarn install
+```
+## 上一步如果报engine检查的错误请执行
+```
+yarn config set ignore-engines true
 ```
 
 ### Compiles and hot-reloads for development
