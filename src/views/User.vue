@@ -1,10 +1,8 @@
 <template>
     <div class="manage">
-        <el-dialog title="提示" 
-        :visible.sync="dialogVisible" width="30%"
-        :before-close="handleClose">
+        <el-dialog title="提示" :visible.sync="dialogVisible" width="50%" :before-close="handleClose">
             <!-- 用户的表单信息 -->
-            <el-form ref="form" :rules="rules":inline="true" :model="form" label-width="80px">
+            <el-form ref="form" :rules="rules" :inline="true" :model="form" label-width="80px">
                 <el-form-item label="姓名" prop="name">
                     <el-input placeholder="请输入姓名" v-model="form.name"></el-input>
                 </el-form-item>
@@ -35,12 +33,21 @@
             <el-button @click="dialogVisible = true" type="primary">
                 + 新增
             </el-button>
+            <el-table :data="tableData" style="width: 100%">
+                <el-table-column prop="date" label="日期" width="180">
+                </el-table-column>
+                <el-table-column prop="name" label="姓名" width="180">
+                </el-table-column>
+                <el-table-column prop="address" label="地址">
+                </el-table-column>
+            </el-table>
         </div>
     </div>
 </template>
 
 
 <script>
+import { getUser } from '@/api'
 export default {
     data() {
         return {
@@ -52,29 +59,30 @@ export default {
                 birth: '',
                 addr: ''
             },
-            rules:{
-                name:[
-                    { required: true, message: '请输入姓名'}
+            tableData:[],
+            rules: {
+                name: [
+                    { required: true, message: '请输入姓名' }
                 ],
-                age:[
-                    { required: true, message: '请输入年龄'}
+                age: [
+                    { required: true, message: '请输入年龄' }
                 ],
-                sex:[
-                    { required: true, message: '请选择性别'}
+                sex: [
+                    { required: true, message: '请选择性别' }
                 ],
-                birth:[
-                    { required: true, message: '请选择出生日期'}
+                birth: [
+                    { required: true, message: '请选择出生日期' }
                 ],
-                addr:[
-                    { required: true, message: '请输入地址'}
+                addr: [
+                    { required: true, message: '请输入地址' }
                 ]
             }
         }
     },
     methods: {
-        submit(){
-            this.$refs.form.validate((valid)=>{
-                if(valid){
+        submit() {
+            this.$refs.form.validate((valid) => {
+                if (valid) {
                     // 说明校验通过才会进行后续的数据处理
                     console.log(this.form)
                     // 清空弹窗的数据
@@ -85,14 +93,19 @@ export default {
             })
 
         },
-        handleClose(){
+        handleClose() {
             // 弹窗关闭之前，清空表单数据
             this.$refs.form.resetFields()
             this.dialogVisible = false
         },
-        cancel(){
+        cancel() {
             this.handleClose()
         }
+    },
+    mounted(){
+        getUser().then(({data})=>{
+            console.log(data)
+        })
     }
 }
 
