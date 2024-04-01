@@ -11,12 +11,12 @@
                 </el-form-item>
                 <el-form-item label="性别" prop="sex">
                     <el-select v-model="form.sex" placeholder="请选择">
-                        <el-option label="男" value="1"></el-option>
-                        <el-option label="女" value="0"></el-option>
+                        <el-option label="男" :value="1"></el-option>
+                        <el-option label="女" :value="0"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="出生日期" prop="birth">
-                    <el-date-picker v-model="form.birth" type="date" placeholder="选择日期">
+                    <el-date-picker v-model="form.birth" type="date" placeholder="选择日期" value-format="yyyy-MM-DD">
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item label="地址" prop="addr">
@@ -30,20 +30,20 @@
             </span>
         </el-dialog>
         <div class="manage-header">
-            <el-button @click="dialogVisible = true" type="primary">
+            <el-button @click=handleAdd type="primary">
                 + 新增
             </el-button>
             <el-table :data="tableData" style="width: 100%">
                 <el-table-column prop="name" label="姓名"></el-table-column>
                 <el-table-column prop="sex" label="性别">
                     <template slot-scope="scope">
-                        <span>{{ scope.row.sex === 1? '男':'女'}}</span>
+                        <span>{{ scope.row.sex === 1 ? '男' : '女' }}</span>
                     </template>
                 </el-table-column>
                 <el-table-column prop="age" label="年龄"> </el-table-column>
                 <el-table-column prop="birth" label="出生日期"> </el-table-column>
                 <el-table-column prop="addr" label="地址"> </el-table-column>
-                <!--两个按钮--> 
+                <!--两个按钮-->
                 <el-table-column prop="addr" label="地址">
                     <template slot-scope="scope">
                         <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
@@ -57,7 +57,7 @@
 
 
 <script>
-import { getUser } from '@/api'
+import { getUser, addUser, editUser, delUser } from '@/api'
 export default {
     data() {
         return {
@@ -86,7 +86,8 @@ export default {
                 addr: [
                     { required: true, message: '请输入地址' }
                 ]
-            }
+            },
+            modalType: 0 // 0表示新增弹窗，1表示编辑弹窗
         }
     },
     methods: {
@@ -94,7 +95,18 @@ export default {
             this.$refs.form.validate((valid) => {
                 if (valid) {
                     // 说明校验通过才会进行后续的数据处理
-                    console.log(this.form)
+                    //console.log(this.form)
+                    // 新增的数据
+                    if (this.modalType === 0) {
+                        addUser(this.form).then(() => {
+                            // 刷新当前列表
+                            this.getList()
+                        })
+                    } else {
+                        editUser(this.form).then(() => {
+                            this.getList()
+                        })
+                    }
                     // 清空弹窗的数据
                     this.handleClose()
                     // 关闭弹窗
@@ -102,6 +114,10 @@ export default {
                 }
             })
 
+        },
+        handleAdd() {
+            this.modalType = 0
+            this.dialogVisible = true
         },
         handleClose() {
             // 弹窗关闭之前，清空表单数据
@@ -111,18 +127,43 @@ export default {
         cancel() {
             this.handleClose()
         },
-        handleEdit(row){
-
+        handleEdit(row) {
+            this.modalType = 1
+            this.dialogVisible = true
+            // 注意，要对当前行数据进行深拷贝
+            this.form = JSON.parse(JSON.stringify(row))
         },
-        handleDelete(row){
-
+        handleDelete(row) {
+            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                delUser({id: row.id}).then(()=>{
+                    this.$message({
+                        type: 'success',
+                        message: '删除成功!'
+                    });
+                    this.getList()
+                })
+                
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '已取消删除'
+                });
+            });
+        },
+        // 获取列表的数据
+        getList() {
+            getUser().then(({ data }) => {
+                //console.log(data)
+                this.tableData = data.list
+            })
         }
     },
     mounted() {
-        getUser().then(({ data }) => {
-            //console.log(data)
-            this.tableData = data.list
-        })
+        this.getList()
     }
 }
 
