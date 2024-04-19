@@ -32,35 +32,40 @@
         <div class="manage-header">
             <el-button @click=handleAdd type="primary">
                 + 新增
-            </el-button> 
+            </el-button>
             <!-- form的搜索框 -->
+            <el-form :inline="true" :model="userForm">
+                <el-form-item>
+                    <el-input placeholder="请输入内容" v-model="userForm.name"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="onSubmit"> 查询 </el-button>
+                </el-form-item>
+            </el-form>
         </div>
-        <el-table
-            height="90%" 
-            :data="tableData" style="width: 100%">
-            <el-table-column prop="name" label="姓名"></el-table-column>
-            <el-table-column prop="sex" label="性别">
-                <template slot-scope="scope">
-                    <span>{{ scope.row.sex === 1 ? '男' : '女' }}</span>
-                </template>
-            </el-table-column>
-            <el-table-column prop="age" label="年龄"> </el-table-column>
-            <el-table-column prop="birth" label="出生日期"> </el-table-column>
-            <el-table-column prop="addr" label="地址"> </el-table-column>
-            <!--两个按钮-->
-            <el-table-column prop="addr" label="地址">
-                <template slot-scope="scope">
-                    <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
-                    <el-button type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
-                </template>
-            </el-table-column>
-        </el-table>
-        <div>
-            <el-pagination
-                layout="prev, pager, next"
-                :total="total"
-                @current-change="handlePage">
-            </el-pagination>
+        <div class="common-table">
+            <el-table stripe height="90%" :data="tableData" style="width: 100%">
+                <el-table-column prop="name" label="姓名"></el-table-column>
+                <el-table-column prop="sex" label="性别">
+                    <template slot-scope="scope">
+                        <span>{{ scope.row.sex === 1 ? '男' : '女' }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="age" label="年龄"> </el-table-column>
+                <el-table-column prop="birth" label="出生日期"> </el-table-column>
+                <el-table-column prop="addr" label="地址"> </el-table-column>
+                <!--两个按钮-->
+                <el-table-column prop="addr" label="地址">
+                    <template slot-scope="scope">
+                        <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
+                        <el-button type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <div class="pager">
+                <el-pagination layout="prev, pager, next" :total="total" @current-change="handlePage">
+                </el-pagination>
+            </div>
         </div>
     </div>
 </template>
@@ -98,7 +103,15 @@ export default {
                 ]
             },
             modalType: 0, // 0表示新增弹窗，1表示编辑弹窗
-            total: 0
+            total: 0,
+            // 分页参数
+            pageData: {
+                page: 1,
+                limit: 10
+            },
+            userForm:{
+                name: ''
+            }
         }
     },
     methods: {
@@ -167,7 +180,7 @@ export default {
         },
         // 获取列表的数据
         getList() {
-            getUser().then(({ data }) => {
+            getUser({ params: {...this.userForm, ...this.pageData}}).then(({ data }) => {
                 //console.log(data)
                 this.tableData = data.list
                 // 获取当前数据的总条数
@@ -175,8 +188,12 @@ export default {
             })
         },
         // 点击页码的时候回调
-        handlePage(){
-
+        handlePage(val) {
+            this.pageData.page = val
+            this.getList()
+        },
+        onSubmit(){
+            this.getList()
         }
     },
     mounted() {
@@ -188,5 +205,19 @@ export default {
 <style lang="less" scoped>
 .manage {
     height: 90%;
+    .manage-header{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .common-table {
+        position: relative;
+        height: calc(100% - 62px);
+        .pager {
+            bottom: 0;
+            position: absolute;
+            right: 20px;
+        }
+    }
 }
 </style>
